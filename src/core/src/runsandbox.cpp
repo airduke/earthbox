@@ -6,6 +6,8 @@
 //
 
 #include "ros/ros.h"
+#include "sensor_msgs/PointCloud2.h"
+#include "core/sandbox.h"
 
 int is_updating_sandbox = 0;
 
@@ -16,7 +18,7 @@ void updateSandbox()
   return;
 }
 
-void pointcloudCallback(const sensor_msgs::PointCloud2ConstPtr&);
+void pointcloudCallback(const sensor_msgs::PointCloud2ConstPtr& mypointcloud)
 {
   if(!is_updating_sandbox)
   {
@@ -26,14 +28,11 @@ void pointcloudCallback(const sensor_msgs::PointCloud2ConstPtr&);
   return;
 }
 
-
-
-}
 int main(int argc, char **argv)
 {
   ros::init(argc, argv, "runsandbox");
   ros::NodeHandle n;
-  ros::Subscriber sub = nh.subscribe<sensor_msgs::PointCloud2> (topic, 1, pointcloudCallback);
+  ros::Subscriber sub = n.subscribe<sensor_msgs::PointCloud2> ("junk_pointcloud_topic", 1, pointcloudCallback);
   ros::Rate loop_rate(10);
   int count = 0;
   while (ros::ok())

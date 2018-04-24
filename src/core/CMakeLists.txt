@@ -4,8 +4,20 @@ project(core)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED)
+find_package(catkin REQUIRED COMPONENTS
+  roscpp
+  rospy
+  std_msgs
+  sensor_msgs
+  tf
+  message_generation
+  pcl_conversions
+  pcl_ros
+#  dynamixel_sdk
+#  dynamixel_workbench_msgs
+#  dynamixel_workbench_toolbox
 
+)
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -109,7 +121,9 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 # include_directories(include)
-
+include_directories(
+  ${catkin_INCLUDE_DIRS}
+)
 ## Declare a C++ library
 # add_library(core
 #   src/${PROJECT_NAME}/core.cpp
@@ -179,3 +193,15 @@ catkin_package(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+
+
+include_directories(include ${catkin_INCLUDE_DIRS})
+
+#add_executable(static_robot_tfs src/static-robot-tfs.cpp)
+#target_link_libraries(static_robot_tfs ${catkin_LIBRARIES})
+
+add_executable(runsandbox src/runsandbox.cpp)
+target_link_libraries(runsandbox ${catkin_LIBRARIES})
+
+
+
