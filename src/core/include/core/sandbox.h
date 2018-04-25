@@ -11,6 +11,8 @@
 
 #include "geometry_msgs/Point.h"
 #include "sensor_msgs/PointCloud2.h"
+#include <opencv2/highgui.h>
+
 
 class Sandbox
 {
@@ -23,6 +25,8 @@ public:
     rain_center.z = -1;
     running = false;
     using_cloud = false;
+    cloud = NULL;
+    status = 0;
   }
   ~Sandbox();
 
@@ -46,11 +50,14 @@ private:
   bool using_cloud;
   sensor_msgs::PointCloud2 cloud;
   geometry_msgs::Point rain_center;
+  int status;
+  
 
   void checkRaining();
   void updateMap();
   void updateWater();  
-  void updateProjection();  
+  void updateProjection();
+  void displayImage(); 
 
 };
 

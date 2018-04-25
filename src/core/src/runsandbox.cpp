@@ -10,6 +10,7 @@
 #include "core/sandbox.h"
 
 int is_updating_sandbox = 0;
+Sandbox mysandbox;
 
 void updateSandbox()
 {
@@ -20,12 +21,7 @@ void updateSandbox()
 
 void pointcloudCallback(const sensor_msgs::PointCloud2ConstPtr& mypointcloud)
 {
-  if(!is_updating_sandbox)
-  {
-    is_updating_sandbox = 1;
-    updateSandbox();
-  }
-  return;
+  mysandbox.nextPointcloud(mypointcloud);
 }
 
 int main(int argc, char **argv)
@@ -35,12 +31,16 @@ int main(int argc, char **argv)
   ros::Subscriber sub = n.subscribe<sensor_msgs::PointCloud2> ("junk_pointcloud_topic", 1, pointcloudCallback);
   ros::Rate loop_rate(10);
   int count = 0;
+
   while (ros::ok())
   {
+    if(mysandbox.getStatus<1)
+      mysandbox.initialize();
+    else
+      sandbox.run();  
   ros::spinOnce();
         
   loop_rate.sleep();
-  ++count;
   }
   return 0;
 }
